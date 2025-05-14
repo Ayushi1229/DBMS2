@@ -1,0 +1,175 @@
+-----PART A----
+1]db.Student.aggregate([{$group:{_id:"$CITY"}}])
+db.Student.aggregate([{$group:{_id:"$CITY"}},{$project:{_id:0,city:"$_id"}}])
+2]db.Student.aggregate([{$group:{_id:"$CITY",count:{$sum:1}}}])
+3]db.Student.aggregate([{$group:{_id:null,totalSalary:{$sum:"$FEES"}}}])
+4]db.Student.aggregate([{$group:{_id:null,avgSalary:{$avg:"$FEES"}}}])
+5]db.Student.aggregate([{$group:{_id:0,max_fees:{$max:"$FEES"},min_fees:{$min:"$FEES"}}}])
+6]db.Student.aggregate([{$group:{_id:"$CITY",total_fees:{$sum:"$FEES"}}}])
+7]db.Student.aggregate([{$group:{_id:"$GENDER",max_fees:{$max:"$FEES"}}}])
+8]db.Student.aggregate([{$group:{_id:"$CITY",max_fees:{$max:"$FEES"},min_fees:{$min:"$FEES"}}}])
+9]db.Student.aggregate([{$match:{CITY:'Baroda'}},{$group:{_id:"$CITY",count:{$sum:1}}}])
+10]db.Student.aggregate([{$match:{CITY:'Rajkot'}},{$group: {_id: "$CITY",averageFee: { $avg: "$FEES" }}}])
+11]db.Student.aggregate([{$match:{GENDER:{$in:['Male','Female']}}},{$group:{_id:'$DEPARTMENT',count:{$sum:1}}}])
+12]db.Student.aggregate([{$group:{_id:"$DEPARTMENT",count:{$sum:"$FEES"}}}])
+13]db.Student.aggregate([{$group:{_id:{city:"$CITY",Gender:"$GENDER"},Min_fees:{$min:"$FEES"}}}])
+14]db.Student.aggregate([{ $sort: { FEES: -1 } },{ $limit: 5 }])
+15]db.Student.aggregate([{$group:{_id:"$CITY",avgfees:{$avg:"$FEES"},count:{$sum:1}}},{$match:{count:{$gt:1}}}])
+16]db.Student.aggregate([
+  { $match: { DEPARTMENT: { $in: ['CE', 'Mechanical'] } } },
+  { $group: { _id: null, totalfees: { $sum: "$FEES" } } }
+])
+17]db.Student.aggregate([{$match:{GENDER:{$in:['Male','Female']}}},{$group:{_id:'$DEPARTMENT',count:{$sum:1}}}])
+18]db.Student.aggregate([
+  { $match: { CITY: "Rajkot" } },
+  { $group: { _id: "$DEPARTMENT", avgfees: { $avg: "$FEES" } } }
+19]db.Student.aggregate([{$group:{_id:"$SEM",TOTALFEES:{$sum:"$FEES"},avgfess:{$avg:"$FEES"}}},{$sort:{TOTALFEES:-1}}]) 
+20]db.Student.aggregate([{$group:{_id:"$CITY",total:{$sum:"$FEES"}}},{$sort:{totalfees:-1}},{$limit:3}])
+
+
+----PART B----
+1]db.createCollection('Stock')
+2]db.Stock.insertMany([{   "_id": 1, 
+    "company": "Company-A", 
+    "sector": "Technology", 
+    "eps": 5.2, 
+    "pe": 15.3, 
+    "roe": 12.8, 
+    "sales": 300000, 
+    "profit": 25000 
+} ,
+{    "_id": 2, 
+    "company": "Company-B", 
+    "sector": "Finance", 
+    "eps": 7.1, 
+    "pe": 12.4, 
+    "roe": 10.9, 
+    "sales": 500000, 
+    "profit": 55000 
+} ,
+{    "_id": 3, 
+    "company": "Company-C", 
+    "sector": "Retail", 
+    "eps": 3.8, 
+    "pe": 22.1, 
+    "roe": 9.5, 
+    "sales": 200000, 
+    "profit": 15000 
+} ,
+{    "_id": 4, 
+    "company": "Company-D", 
+    "sector": "Technology", 
+    "eps": 5.2, 
+    "pe": 15.3, 
+    "roe": 12.8, 
+    "sales": 300000, 
+    "profit": 25000 
+} ,
+{    "_id": 5,
+"company": "Company-E", 
+"sector": "Finance", 
+"eps": 7.1, 
+"pe": 12.4, 
+"roe": 10.9, 
+"sales": 450000, 
+"profit": 40000 
+} ,
+{    "_id": 6, 
+"company": "Company-F", 
+"sector": "Healthcare", 
+"eps": 3.8, 
+"pe": 18.9, 
+"roe": 9.5, 
+"sales": 500000, 
+"profit": 35000 
+} ,
+{    "_id": 7, 
+"company": "Company-G", 
+"sector": "Retail", 
+"eps": 4.3, 
+"pe": 22.1, 
+"roe": 14.2, 
+"sales": 600000, 
+"profit": 45000 
+} ,
+{ 
+"_id": 8, 
+"company": "Company-H", 
+"sector": "Energy", 
+"eps": 6.5, 
+"pe": 10.5, 
+"roe": 16.4, 
+"sales": 550000, 
+"profit": 50000 
+} ,
+{ 
+"_id": 9, 
+"company": "Company-I", 
+"sector": "Consumer Goods", 
+"eps": 2.9, 
+"pe": 25.3, 
+"roe": 7.8, 
+"sales": 350000, 
+"profit": 20000 
+} ])
+3]db.Stock.aggregate([{ $group: { _id: null,  totalSales: { $sum: "$sales" }}}])
+
+4]db.Stock.aggregate([{ $group: { _id: 'sector',  avgprofit: { $avg: "$profit" }}}])
+ 
+5]db.Stock.aggregate([{ $group: { _id: "$sector", companyCount: { $sum: 1 }}}])
+
+6]db.Stock.aggregate([{ $group: { _id: null, maxpe: { $max:"$pe" }}}])
+
+7]db.Stock.aggregate([{$match: {pe:{ $gt: 20 }}}])
+
+8]db.Stock.aggregate([{$match:{sales:{$gt:250000}}},{$group:{_id:null,totalProfit:{ $sum:"$profit"}}}])
+
+9]db.Stock.aggregate([{ $project: {_id: 0,company: 1,profit: 1}}])
+
+10. Find companies where EPS is greater than the average EPS. 
+
+11]
+db.Stock.aggregate([{$group:{_id: "$sector",maxSales: { $max: "$sales" }}}])
+
+12] db.Stock.aggregate([{$group:{_id: "$sector",totalSales: { $sum: "$sales" },totalprofit:{$sum:"$profit"}}}])
+
+13]db.Stock.aggregate([{$sort: { profit: -1 }}])
+
+14]db.Stock.aggregate([{$group:{_id: null, avgROE: { $avg: "$roe" }}}])
+
+15]
+db.Stock.aggregate([{$group:{ _id: "$sector",minEPS: { $min: "$eps" },maxEPS: { $max: "$eps" }}}])
+
+----PART C---
+1]
+db.Stock.aggregate([{$match: { profit: { $gt: 30000 }}},{$count: "companyCount"}])
+
+2]
+db.Stock.aggregate([{$group:{_id: "$sector",  totalProfit: { $sum: "$profit" }}},{$sort: { totalProfit: -1 }}])
+
+3] db.Stock.aggregate([{$sort: { sales: -1 }},{$limit: 3}])
+
+4]
+db.Stock.aggregate([ {$group: {_id: "$sector",avgPERatio: { $avg: "$pe" }}}])
+
+5]
+db.Stock.aggregate([{$project: {_id: 0,name: 1,totalSalesAndProfit: { $sum: ["$sales", "$profit"] }}}])
+
+6]db.Stock.aggregate([{$match: { sales: { $lt: 400000 }}},{$sort: { sales: 1 }}])
+
+7]
+db.Stock.aggregate([{$group:{_id: "$sector",companyCount: { $sum: 1 }}}])
+
+8]
+db.Stock.aggregate([{$match: { sales: { $gt: 200000 }}},{$group:{_id: null,avgROE: { $avg: "$roe"}}}])
+
+9] 
+db.Stock.aggregate([{$group:{_id: "$sector",maxProfit: { $max: "$profit" }}}])
+
+10]
+db.Stock.aggregate([{$group: {_id: "$sector",totalSales: { $sum: "$sales" },companyCount: { $sum: 1 }}}])
+
+11] 
+db.Stock.aggregate([{$match: { profit: { $gt: 20000 }}},{$project:{_id: 0,name: 1,profit: 1}}])
+
+12]db.Stock.aggregate([{$sort: { roe:1}}])
